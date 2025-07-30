@@ -32,6 +32,8 @@ $(document).ready(function() {
         $(".status-dropdown").on("change", function () {
             const selected = $(this).val();
             const row = $(this).closest("tr");
+            const rowIndex = parseInt($(this).data("row"), 10);
+            
             if (selected === "Sudah Absen") {
                 row.addClass("sudah-absen");
             } else {
