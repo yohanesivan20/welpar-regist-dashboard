@@ -1,37 +1,45 @@
-import { google } from "googleapis";
-import fs from "fs";
+// __define-ocg__: API to update Google Sheet row status from frontend dropdown
+import { google } from 'googleapis';
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method Not Allowed' });
+  }
+
+  const { rowIndex, status } = req.body;
+  if (typeof rowIndex !== 'number' || !status) {
+    return res.status(400).json({ message: 'Invalid request body' });
   }
 
   try {
-    const { row, col, value } = req.body;
-    const sheetId = "1FrCJK0o2_Dbj_xqAB30CNGOpLeIYPzKtnsXezkwA7NE"; // ID Google Sheet kamu
+    // Load credentials from environment variable
+    const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
 
-    const serviceAccount = JSON.parse(fs.readFileSync("service-account.json", "utf8"));
-
-    const jwtClient = new google.auth.JWT(
-      serviceAccount.client_email,
-      null,
-      serviceAccount.private_key,
-      ["https://www.googleapis.com/auth/spreadsheets"]
-    );
-
-    const sheets = google.sheets({ version: "v4", auth: jwtClient });
-
-    const range = `Sheet1!${col}${row}`;
-    await sheets.spreadsheets.values.update({
-      spreadsheetId: sheetId,
-      range,
-      valueInputOption: "USER_ENTERED",
-      requestBody: { values: [[value]] },
+    const auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     });
 
-    res.status(200).json({ success: true, message: "Status updated" });
+    const sheets = google.sheets({ version: 'v4', auth });
+
+    const spreadsheetId = '1FrCJK0o2_Dbj_xqAB30CNGOpLeIYPzKtnsXezkwA7NE';
+    const sheetName = 'Sheet1';
+    const column = 'J'; // Misalnya kolom ke-26 (ubah jika kolom berbeda)
+
+    const cell = `${sheetName}!${column}${rowIndex + 2}`; // +2 karena index 0 = header, dan Sheets mulai dari 1
+
+    await sheets.spreadsheets.values.update({
+      spreadsheetId,
+      range: cell,
+      valueInputOption: 'RAW',
+      requestBody: {
+        values: [[status]],
+      },
+    });
+
+    return res.status(200).json({ message: 'Status updated successfully' });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+    console.error('Error updating Google Sheet:', err);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 }
