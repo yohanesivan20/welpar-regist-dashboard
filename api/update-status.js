@@ -13,7 +13,10 @@ export default async function handler(req, res) {
 
   try {
     // Load credentials from environment variable
-    const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
+    // const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
+    const credentials = JSON.parse(
+      Buffer.from(process.env.GOOGLE_SERVICE_ACCOUNT, "base64").toString("utf8")
+    );
 
     const auth = new google.auth.GoogleAuth({
       credentials,
