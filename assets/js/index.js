@@ -58,7 +58,7 @@ $(document).ready(function() {
                     });
                 },
                 error: function (xhr, status, error) {
-                    console.log("Error updating status:", error);
+                    console.log("Error updating status:" + error);
                     Swal.fire({
                         icon: "warning",
                         title: "Gagal!",
