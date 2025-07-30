@@ -8,7 +8,7 @@ $(document).ready(function() {
         const rows = parsed.data.map(cols => cols.map(col => col.trim()));
 
         // Tambahkan kolom "No", header asli, dan "Status"
-        const headerRow = ["No", ...rows[0], "Status"];
+        const headerRow = ["No", ...rows[0]];
         $("#tableHead").html(headerRow
             .map((h, i) =>
             i === headerRow.length - 1
@@ -23,13 +23,13 @@ $(document).ready(function() {
         // Isi table body
         const bodyHTML = rows.slice(1)
             .map((cols, index) => {
-                const statusText = cols[9] && cols[9].toLowerCase() !== "Terdaftar"
-                    ? "Hadir"
-                    : "Terdaftar";
-                
+                const statusText = (cols[9] || "").toLowerCase() === "hadir" ? "Hadir" : "Terdaftar";
+                if (statusText === "Hadir") totalHadir++;
+
                 const bgStatusColor = statusText === "Hadir" ? "#b3ffb3" : "#f2ff7f";
 
-                const statusDropdown = `
+                // dropdown tetap ditaruh dalam kolom ke-10 (status)
+                 const statusDropdown = `
                     <td class="status-cell" style="background-color: ${bgStatusColor};">
                         <select class="status-dropdown styled-dropdown" data-row="${index}">
                             <option style="text-indent: 1px;" value="Terdaftar" ${statusText === "Terdaftar" ? "selected" : ""}>Terdaftar</option>
@@ -38,12 +38,15 @@ $(document).ready(function() {
                     </td>
                 `;
 
+                // Replace kolom status (index 9) dengan dropdown
+                cols[9] = statusDropdown;
+
                 const dataCells = [
-                    `<td>${index + 1}</td>`, // Kolom No
-                    ...cols.map(col => `<td>${col}</td>`)
+                    `<td>${index + 1}</td>`,
+                    ...cols.map((col, i) => i === 9 ? col : `<td>${col}</td>`) // render cell biasa kecuali status
                 ].join("");
 
-                return `<tr>${dataCells}${statusDropdown}</tr>`;
+                return `<tr>${dataCells}</tr>`;
             }).join("");
 
         $("#tableBody").html(bodyHTML);
