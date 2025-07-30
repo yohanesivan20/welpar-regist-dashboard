@@ -33,7 +33,7 @@ $(document).ready(function() {
             const selected = $(this).val();
             const row = $(this).closest("tr");
             const rowIndex = parseInt($(this).data("row"), 10);
-            
+
             if (selected === "Sudah Absen") {
                 row.addClass("sudah-absen");
             } else {
@@ -51,10 +51,19 @@ $(document).ready(function() {
                 }),
                 success: function () {
                     console.log("Status updated in Google Sheets");
+                    Swal.fire({
+                        icon: "success",
+                        title: "Berhasil!",
+                        text: "Status di Google Sheets berhasil diperbarui."
+                    });
                 },
                 error: function (xhr, status, error) {
-                    console.error("Error updating status:", error);
-                    alert("Gagal mengupdate Google Sheets.");
+                    console.log("Error updating status:", error);
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Gagal!",
+                        text: "Status di Google Sheets gagal diperbarui."
+                    });
                 }
             });
         });
