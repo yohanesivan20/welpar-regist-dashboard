@@ -8,12 +8,14 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <h2>Dashboard Registrasi Way Finder</h2>
-        <p>Total Pendaftar : <b>40/250</b></p>
+        <h2>Dashboard Absensi Peserta Way Finder</h2>
         
-        <div class="search-field">
-            <input type="text">
-            <button class="btn btn-info">Search</button>
+        <div id="totalHadirContainer" style="font-weight: bold; margin-bottom: 15px;">
+            Total Peserta Hadir: <span id="totalHadir">0</span>
+        </div>
+        
+        <div id="searchContainer">
+            <input type="text" id="searchInput" placeholder="🔍 Cari peserta...">
         </div>
 
         <table id="dataTable">

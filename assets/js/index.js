@@ -1,44 +1,79 @@
 $(document).ready(function() {
-    const sheetId = "1FrCJK0o2_Dbj_xqAB30CNGOpLeIYPzKtnsXezkwA7NE"; // ID Google Sheets kamu
+    const sheetId = "1FrCJK0o2_Dbj_xqAB30CNGOpLeIYPzKtnsXezkwA7NE";
     const sheetName = "Sheet1";
     const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
 
-    $.get(url, function (data) {
+    $.get(url, function(data) {
         const parsed = Papa.parse(data.trim(), { skipEmptyLines: true });
         const rows = parsed.data.map(cols => cols.map(col => col.trim()));
 
-        // Tambahkan kolom "Status" di header
-        const headerRow = [...rows[0], "Status"];
-        $("#tableHead").html(headerRow.map(h => `<th>${h}</th>`).join(""));
+        // Tambahkan kolom "No", header asli, dan "Status"
+        const headerRow = ["No", ...rows[0], "Status"];
+        $("#tableHead").html(headerRow
+            .map((h, i) =>
+            i === headerRow.length - 1
+                ? `<th class="status-header">${h}</th>`
+                : `<th>${h}</th>`
+        )
+        .join(""));
+
+        let totalHadir = 0;
+        const totalPeserta = rows.length - 1;
 
         // Isi table body
         const bodyHTML = rows.slice(1)
             .map((cols, index) => {
-        const dataCells = cols.map(col => `<td>${col}</td>`).join("");
-        const dropdown = `
-            <td>
-            <select class="status-dropdown" data-row="${index}">
-                <option value="Belum Hadir" selected>Belum Hadir</option>
-                <option value="Sudah Absen">Sudah Absen</option>
-            </select>
-            </td>
-            `;
-            return `<tr>${dataCells}${dropdown}</tr>`;
-        }).join("");
+                const statusText = cols[9] && cols[9].toLowerCase() !== "Terdaftar"
+                    ? "Hadir"
+                    : "Terdaftar";
+                
+                const bgStatusColor = statusText === "Hadir" ? "#b3ffb3" : "#f2ff7f";
+
+                const statusDropdown = `
+                    <td class="status-cell" style="background-color: ${bgStatusColor};">
+                        <select class="status-dropdown styled-dropdown" data-row="${index}">
+                            <option style="text-indent: 1px;" value="Terdaftar" ${statusText === "Terdaftar" ? "selected" : ""}>Terdaftar</option>
+                            <option style="text-indent: 1px;" value="Hadir" ${statusText === "Hadir" ? "selected" : ""}>Hadir</option>
+                        </select>
+                    </td>
+                `;
+
+                const dataCells = [
+                    `<td>${index + 1}</td>`, // Kolom No
+                    ...cols.map(col => `<td>${col}</td>`)
+                ].join("");
+
+                return `<tr>${dataCells}${statusDropdown}</tr>`;
+            }).join("");
 
         $("#tableBody").html(bodyHTML);
+
+        // Tampilkan total hadir
+        $("#totalHadir").text(`${totalHadir} / ${totalPeserta}`);
 
         // Event listener untuk dropdown
         $(".status-dropdown").on("change", function () {
             const selected = $(this).val();
-            const row = $(this).closest("tr");
+            const cell = $(this).closest("td");
             const rowIndex = parseInt($(this).data("row"), 10);
 
-            if (selected === "Sudah Absen") {
-                row.addClass("sudah-absen");
+            if (selected === "Hadir") {
+                cell.addClass("sudah-absen");
+                cell.removeClass("belum-hadir");
             } else {
-                row.removeClass("sudah-absen");
+                cell.removeClass("sudah-absen");
+                cell.addClass("belum-hadir");
             }
+
+            // Hitung total hadir ulang
+            let hadir = 0;
+            const total = $(".status-dropdown").length;
+
+            $(".status-dropdown").each(function () {
+                if ($(this).val() === "Hadir") hadir++;
+            });
+
+            $("#totalHadir").text(`${hadir} / ${total}`);
 
             // Kirim ke backend (Vercel API)
             $.ajax({
@@ -50,7 +85,6 @@ $(document).ready(function() {
                     status: selected
                 }),
                 success: function () {
-                    console.log("Status updated in Google Sheets");
                     Swal.fire({
                         icon: "success",
                         title: "Berhasil!",
@@ -65,6 +99,16 @@ $(document).ready(function() {
                         text: "Status di Google Sheets gagal diperbarui."
                     });
                 }
+            });
+        });
+
+        // Fitur pencarian
+        $("#searchInput").on("keyup", function () {
+            const keyword = $(this).val().toLowerCase();
+
+            $("#tableBody tr").filter(function () {
+                const rowText = $(this).text().toLowerCase();
+                $(this).toggle(rowText.indexOf(keyword) > -1);
             });
         });
     });

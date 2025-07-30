@@ -15,6 +15,41 @@ body {
     text-align: center;
 }
 
+#searchInput {
+    padding: 10px 14px;
+    width: 280px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#searchInput:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+#searchContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#totalHadirContainer {
+    font-weight: bold;
+    font-size: 15px;
+    background-color: #f5f5f5;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border-left: 4px solid #4CAF50;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -36,6 +71,57 @@ th {
       background: #f2f2f2;
     }
 
-    tr.sudah-absen {
+    td.belum-hadir {
+      background: #f2ff7f !important;
+    }
+
+    td.sudah-absen {
       background: #b3ffb3 !important;
     }
+
+.status-dropdown {
+  width: 100%;
+  max-width: 120px; /* atur sesuai kebutuhan */
+  padding: 4px 8px;
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+.styled-dropdown {
+    padding: 6px 18px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+    appearance: none; /* Hilangkan panah default di beberapa browser */
+    background-position: right 10px center;
+    background-repeat: no-repeat;
+    background-size: 12px;
+    transition: all 0.25s ease;
+}
+
+/* Tambahkan ikon panah custom */
+.styled-dropdown {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20,50 70,100 120,50' stroke='%23333' stroke-width='20' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* Hover effect */
+.styled-dropdown:hover {
+    border-color: #888;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+/* Fokus (klik) */
+.styled-dropdown:focus {
+    outline: none;
+    border-color: #555;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.status-header,
+.status-cell {
+    width: 150px; /* atau sesuaikan misal 150px */
+    min-width: 100px;
+    max-width: 150px;
+}
