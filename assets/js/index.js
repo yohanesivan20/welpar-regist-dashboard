@@ -13,17 +13,17 @@ $(document).ready(function() {
 
         // Isi table body
         const bodyHTML = rows.slice(1)
-            .map(cols => {
-            const dataCells = cols.map(col => `<td>${col}</td>`).join("");
-            const dropdown = `
-                <td>
-                <select class="status-dropdown">
-                    <option value="Belum Hadir" selected>Belum Hadir</option>
-                    <option value="Sudah Absen">Sudah Absen</option>
-                </select>
-                </td>
+            .map((cols, index) => {
+        const dataCells = cols.map(col => `<td>${col}</td>`).join("");
+        const dropdown = `
+            <td>
+            <select class="status-dropdown" data-row="${index}">
+                <option value="Belum Hadir" selected>Belum Hadir</option>
+                <option value="Sudah Absen">Sudah Absen</option>
+            </select>
+            </td>
             `;
-        return `<tr>${dataCells}${dropdown}</tr>`;
+            return `<tr>${dataCells}${dropdown}</tr>`;
         }).join("");
 
         $("#tableBody").html(bodyHTML);
