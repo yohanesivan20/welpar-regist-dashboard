@@ -1,6 +1,7 @@
 {
   "name": "update-google-sheet",
   "version": "1.0.0",
+  "type": "module",
   "dependencies": {
     "googleapis": "^130.0.0"
   }
