@@ -79,6 +79,44 @@ $(document).ready(function () {
         $('#summaryAge').text(`${hadirBottomAge} / ${hadirMiddleAge} / ${hadirTopAge}`)
 
         bindDropdownEvents();
+
+        // Inisialisasi DataTable
+        if ($.fn.DataTable.isDataTable('#attendanceTable')) {
+            $('#attendanceTable').DataTable().destroy();
+        }
+        let table = $('#attendanceTable').DataTable({
+            pageLength: 5,
+            lengthChange: false,
+            searching: true,
+            ordering: false,
+            info: false,
+            autoWidth: true,
+            dom: 'lrtip',
+            columnDefs: [
+            {
+                targets: 4,
+                visibile: false
+            },
+            {
+                targets: 2,            // kolom kedua (index dimulai dari 0)
+                width: '300px'         // atur sesuai kebutuhan
+            },
+            {
+                targets: '_all',
+                className: 'dt-center dt-head-center' // tengahkan header dan isi sel
+            }
+        ]
+        });
+
+        $("#searchInput").on("keyup change", function () {
+            // const keyword = $(this).val().toLowerCase();
+            // $("#tableBody tr").filter(function () {
+            //     const rowText = $(this).text().toLowerCase();
+            //     $(this).toggle(rowText.indexOf(keyword) > -1);
+            // });
+
+            table.search(this.value).draw();
+        });
     }
 
     function bindDropdownEvents() {
@@ -172,13 +210,5 @@ $(document).ready(function () {
 
     $("#sortTimestamp").on("click", function () {
         renderTable(originalRows);
-    });
-
-    $("#searchInput").on("keyup", function () {
-        const keyword = $(this).val().toLowerCase();
-        $("#tableBody tr").filter(function () {
-            const rowText = $(this).text().toLowerCase();
-            $(this).toggle(rowText.indexOf(keyword) > -1);
-        });
     });
 });

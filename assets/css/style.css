@@ -96,6 +96,33 @@ body {
     border-left: 4px solid #4CAF50;
 }
 
+/* Gaya tombol pagination */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  background-color: #3498db; /* warna normal */
+  color: #ffffff !important;
+  border-radius: 4px;
+  margin: 0 2px;
+  padding: 0.5em 0.8em;
+}
+
+/* Hover effect */
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background-color: #2980b9;
+  color: #fff !important;
+}
+
+/* Gaya tombol aktif */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background-color: #0066ff !important;
+  color: #fff !important;
+  font-weight: bold;
+}
+
+/* Jika ingin tombol kotak bulat */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  border-radius: 50% !important;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;

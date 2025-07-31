@@ -6,7 +6,7 @@
     <link rel="icon" type="image/png" href="assets/images/ktm-logo.png">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/template.css">
-    <!-- <link rel="stylesheet" href="assets/css/purple-style.css"> -->
+    <link rel="stylesheet" href="assets/css/datatables/jquery.dataTables.min.css">
 </head>
 <body>
     <div class="dashboard-container">
@@ -54,7 +54,7 @@
         </div>
         <!-- End Summary -->
 
-        <div class="row">
+        <div class="row mb-3">
             <div class="table-control">
                 <div id="searchContainer">
                     <input type="text" id="searchInput" placeholder="🔍 Cari peserta disini biar cepet...">
@@ -66,7 +66,7 @@
             </div>
         </div>
 
-        <table id="dataTable">
+        <table id="attendanceTable">
             <thead>
                 <tr id="tableHead"></tr>
             </thead>
@@ -78,5 +78,6 @@
     <script src="assets/js/index.js"></script>
     <script src="assets/js/sweet-alert/sweetalert2@11.js"></script>
     <script src="assets/js/papaparse.min.js"></script>
+    <script src="assets/js/datatables/jquery.dataTables.min.js"></script>
 </body>
 </html>
