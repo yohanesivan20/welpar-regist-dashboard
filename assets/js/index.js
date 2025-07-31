@@ -16,18 +16,40 @@ $(document).ready(function () {
             headerRow.map(h => `<th>${h}</th>`).join("")
         );
 
-        // Update KTM summary
-        updateSummaryByKTM(originalRows);
-
         renderTable(originalRows);
     });
 
     function renderTable(filteredRows) {
         let totalHadir = 0;
+        let hadirKtm = 0;
+        let hadirNon = 0;
+        let hadirBottomAge = 0;
+        let hadirMiddleAge = 0;
+        let hadirTopAge = 0;
+
         const totalPeserta = filteredRows.length;
 
         const bodyHTML = filteredRows.map((cols, index) => {
             const statusText = (cols[9] || "").toLowerCase() === "hadir" ? "Hadir" : "Terdaftar";
+            const keanggotaan = (cols[6] || "").toLowerCase();
+            const umur = (cols[4] || "").toLowerCase();
+
+            //For Summary KTM
+            if (keanggotaan === "sudah bergabung ktm") {
+                if (statusText === "Hadir") hadirKtm++;
+            } else if (keanggotaan === "belum bergabung ktm") {
+                if (statusText === "Hadir") hadirNon++;
+            }
+
+            //For Summary Age
+            if (umur === "8-17 tahun") {
+                if (statusText === "Hadir") hadirBottomAge++;
+            } else if (umur === "17-25 tahun" || umur === "26-30 tahun") {
+                if (statusText === "Hadir") hadirMiddleAge++;
+            } else if (umur === "31-40 tahun" || umur === ">40 tahun") {
+                if (statusText === "Hadir") hadirTopAge++;
+            }
+
             if (statusText === "Hadir") totalHadir++;
 
             const bgStatusColor = statusText === "Hadir" ? "#b3ffb3" : "#f2ff7f";
@@ -53,28 +75,10 @@ $(document).ready(function () {
 
         $("#tableBody").html(bodyHTML);
         $("#totalHadir").text(formatSummary(totalHadir, totalPeserta));
-
-        updateSummaryByKTM(filteredRows);
+        $('#summaryKTM').text(`${hadirKtm} / ${hadirNon}`);
+        $('#summaryAge').text(`${hadirBottomAge} / ${hadirMiddleAge} / ${hadirTopAge}`)
 
         bindDropdownEvents();
-    }
-
-    function updateSummaryByKTM(rows) {
-        let hadirSudah = 0;
-        let hadirBelum = 0;
-
-        rows.forEach(cols => {
-            const keanggotaan = (cols[6] || "").toLowerCase();
-            const status = (cols[9] || "").toLowerCase();
-
-            if (keanggotaan === "sudah bergabung ktm") {
-                if (status === "hadir") hadirSudah++;
-            } else if (keanggotaan === "belum bergabung ktm") {
-                if (status === "hadir") hadirBelum++;
-            }
-        });
-        
-        $("#summaryKTM").text(`${hadirSudah} / ${hadirBelum}`);
     }
 
     function bindDropdownEvents() {
@@ -83,29 +87,51 @@ $(document).ready(function () {
             const cell = $(this).closest("td");
             const rowIndex = parseInt($(this).data("row"), 10);
 
+            // Ubah warna latar dropdown
             if (selected === "Hadir") {
                 cell.css("background-color", "#b3ffb3");
             } else {
                 cell.css("background-color", "#f2ff7f");
             }
 
+            // Hitung ulang total hadir
             let hadir = 0;
-            const total = $(".status-dropdown").length;
-            $(".status-dropdown").each(function () {
-                if ($(this).val() === "Hadir") hadir++;
+            let hadirKtm = 0;
+            let hadirNon = 0;
+            let hadirBottomAge = 0;
+            let hadirMiddleAge = 0;
+            let hadirTopAge = 0;
+
+            $("#tableBody tr").each(function (i) {
+                const dropdown = $(this).find(".status-dropdown").val();
+                const keanggotaan = $(this).find("td").eq(7).text().toLowerCase(); // col[6] berarti <td>.eq(7)
+                const umur = $(this).find("td").eq(5).text().toLowerCase(); // col[4] berarti <td>.eq(5)
+
+                if (dropdown === "Hadir") {
+                    hadir++;
+
+                    //For Summary KTM
+                    if (keanggotaan === "sudah bergabung ktm") hadirKtm++;
+                    else if (keanggotaan === "belum bergabung ktm") hadirNon++;
+
+                    //For Summary Age
+                    if (umur === "8-17 tahun") hadirBottomAge++;
+                    else if (umur === "17-25 tahun" || umur === "26-30 tahun") hadirMiddleAge++;
+                    else if (umur === "31-40 tahun" || umur === ">40 tahun") hadirTopAge++;
+                }
             });
 
-            $("#totalHadir").text(formatSummary(hadir, total));
+            $("#totalHadir").text(formatSummary(hadir, $(".status-dropdown").length));
+            $("#summaryKTM").text(`${hadirKtm} / ${hadirNon}`);
+            $("#summaryAge").text(`${hadirBottomAge} / ${hadirMiddleAge} / ${hadirTopAge}`);
 
-            // Update KTM summary
-            updateSummaryByKTM(originalRows);
-
+            // AJAX update
             $.ajax({
                 url: "/api/update-status",
                 method: "POST",
                 contentType: "application/json",
                 data: JSON.stringify({ rowIndex, status: selected }),
-                beforeSend: function() {
+                beforeSend: function () {
                     Swal.fire({
                         title: "Memproses...",
                         text: "Sedang mengupdate status ke Google Sheets",
@@ -115,8 +141,16 @@ $(document).ready(function () {
                         }
                     });
                 },
-                success: () => Swal.fire({ icon: "success", title: "Berhasil!", text: "Status diperbarui." }),
-                error: () => Swal.fire({ icon: "error", title: "Gagal!", text: "Gagal update status." })
+                success: () => Swal.fire({
+                    icon: "success",
+                    title: "Berhasil!",
+                    text: "Status diperbarui."
+                }),
+                error: () => Swal.fire({
+                    icon: "error",
+                    title: "Gagal!",
+                    text: "Gagal update status."
+                })
             });
         });
     }
