@@ -18,7 +18,6 @@ body {
 /* Summary CSS */
 .card {
   border: 0;
-  text-align: left;
 }
 
 .card .card-body {
@@ -53,6 +52,15 @@ body {
 
 /* End Summary CSS */
 
+.table-control {
+  display:flex;
+  flex-direction: row;
+  justify-content:space-between;
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 #searchInput {
     padding: 10px 14px;
     width: 280px;
@@ -74,7 +82,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     flex-wrap: wrap;
     gap: 10px;
 }

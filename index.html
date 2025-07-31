@@ -6,21 +6,23 @@
     <link rel="icon" type="image/png" href="assets/images/ktm-logo.png">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/template.css">
+    <!-- <link rel="stylesheet" href="assets/css/purple-style.css"> -->
 </head>
 <body>
     <div class="dashboard-container">
-        <h2>Dashboard Absensi Peserta Way Finder</h2>
+        <h2>Dashboard Absensi Kehadiran Peserta Way Finder (23 Agustus 2025)</h2>
 
+        <hr class="mb-3">
         <!-- Summary -->
         <div class="row">
             <div class="col-md-3 stretch-card grid-margin">
                 <div class="card bg-gradient-danger card-img-holder text-white">
                     <div class="card-body">
                         <img src="assets/images/circle.svg" class="card-img-absolute" alt="circle-image"/>
-                        <h4 class="font-weight-normal mb-3">By Keanggotaan
+                        <h4 class="font-weight-normal mb-3">Hadir By Keanggotaan
                             <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                         </h4>
-                        <h2 class="mb-5">0 / 0</h2>
+                        <h2 class="mb-3" id="summaryKTM">0 / 0</h2>
                         <h6 class="card-text">Member KTM / Member Non KTM</h6>
                     </div>
                 </div>
@@ -29,11 +31,11 @@
                 <div class="card bg-gradient-info card-img-holder text-white">
                     <div class="card-body">
                     <img src="assets/images/circle.svg" class="card-img-absolute" alt="circle-image"/>                  
-                    <h4 class="font-weight-normal mb-3">By Umur
+                    <h4 class="font-weight-normal mb-3">Hadir By Umur
                         <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
                     </h4>
-                    <h2 class="mb-5">0 / 0 / 0</h2>
-                    <h6 class="card-text">> 17 / 17 - 30 / 31 < </h6>
+                    <h2 class="mb-3">0 / 0 / 0</h2>
+                    <h6 class="card-text">> 17 Tahun / 17 - 30 Tahun / 31 Tahun < </h6>
                     </div>
                 </div>
             </div>
@@ -52,8 +54,16 @@
         </div>
         <!-- End Summary -->
 
-        <div id="searchContainer">
-            <input type="text" id="searchInput" placeholder="🔍 Cari peserta disini biar cepet...">
+        <div class="row">
+            <div class="table-control">
+                <div id="searchContainer">
+                    <input type="text" id="searchInput" placeholder="🔍 Cari peserta disini biar cepet...">
+                </div>
+                <div class="sorting-controls">
+                    <button class="btn btn-info" id="sortNama">Urutkan Nama A-Z</button>
+                    <button class="btn btn-warning" id="sortTimestamp">Urutkan Timestamp</button>
+                </div>
+            </div>
         </div>
 
         <table id="dataTable">
