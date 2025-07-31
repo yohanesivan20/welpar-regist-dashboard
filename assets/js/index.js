@@ -86,12 +86,13 @@ $(document).ready(function () {
         }
         let table = $('#attendanceTable').DataTable({
             pageLength: 5,
-            lengthChange: false,
+            lengthChange: true,
+            lengthMenu: [5, 10, 25],
             searching: true,
             ordering: false,
             info: false,
             autoWidth: true,
-            dom: 'lrtip',
+            dom: '<"top">rt<"bottom"lp>',  // length (l) + pagination (p) di bagian bawah
             columnDefs: [
             {
                 targets: 4,
@@ -109,12 +110,6 @@ $(document).ready(function () {
         });
 
         $("#searchInput").on("keyup change", function () {
-            // const keyword = $(this).val().toLowerCase();
-            // $("#tableBody tr").filter(function () {
-            //     const rowText = $(this).text().toLowerCase();
-            //     $(this).toggle(rowText.indexOf(keyword) > -1);
-            // });
-
             table.search(this.value).draw();
         });
     }

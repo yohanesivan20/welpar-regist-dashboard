@@ -101,8 +101,7 @@ body {
   background-color: #3498db; /* warna normal */
   color: #ffffff !important;
   border-radius: 4px;
-  margin: 0 2px;
-  padding: 0.5em 0.8em;
+  padding: 0.1em 0.8em;
 }
 
 /* Hover effect */
@@ -121,6 +120,28 @@ body {
 /* Jika ingin tombol kotak bulat */
 .dataTables_wrapper .dataTables_paginate .paginate_button {
   border-radius: 50% !important;
+}
+
+/* Tambahkan jarak atas untuk length menu dan pagination */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_paginate {
+  margin-top: 1em; /* sesuaikan angka sesuai kebutuhan */
+}
+
+/* Atur jarak antar control jika di sebelah satu sama lain */
+.dataTables_wrapper .dataTables_length {
+  margin-right: 1em;
+  display: inline-block;
+}
+.dataTables_wrapper .dataTables_paginate {
+  display: inline-block;
+}
+
+/* Agar dua elemen berdampingan sejajar */
+.dataTables_wrapper .dataTables_bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 table {
