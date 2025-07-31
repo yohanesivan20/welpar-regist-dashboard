@@ -84,23 +84,25 @@ $(document).ready(function () {
         if ($.fn.DataTable.isDataTable('#attendanceTable')) {
             $('#attendanceTable').DataTable().destroy();
         }
+
         let table = $('#attendanceTable').DataTable({
             pageLength: 5,
             lengthChange: true,
             lengthMenu: [5, 10, 25],
             searching: true,
-            ordering: false,
+            ordering: true,
             info: false,
-            autoWidth: true,
+            autoWidth: false,
+            scrollX: true,
             dom: '<"top">rt<"bottom"lp>',  // length (l) + pagination (p) di bagian bawah
             columnDefs: [
             {
-                targets: 4,
-                visibile: false
+                targets: 9,
+                width: '100px'
             },
             {
-                targets: 2,            // kolom kedua (index dimulai dari 0)
-                width: '300px'         // atur sesuai kebutuhan
+                targets: 3,
+                visible: false
             },
             {
                 targets: '_all',
@@ -111,6 +113,19 @@ $(document).ready(function () {
 
         $("#searchInput").on("keyup change", function () {
             table.search(this.value).draw();
+        });
+
+        // Tombol sorting dengan DataTables API
+        $("#sortNama").on("click", function () {
+            if (table) {
+                table.order([2, 'asc']).draw(); // Nama ada di index ke-2 (misalnya)
+            }
+        });
+
+        $("#sortTimestamp").on("click", function () {
+            if (table) {
+                table.order([1, 'asc']).draw(); // Timestamp/No di index ke-1 (misalnya)
+            }
         });
     }
 
@@ -196,14 +211,4 @@ $(document).ready(function () {
         const persen = total === 0 ? 0 : Math.round((hadir / total) * 100);
         return `${hadir} / ${total} (${persen}%)`;
     }
-
-    // Sorting
-    $("#sortNama").on("click", function () {
-        const sorted = [...originalRows].sort((a, b) => a[1].localeCompare(b[1]));
-        renderTable(sorted);
-    });
-
-    $("#sortTimestamp").on("click", function () {
-        renderTable(originalRows);
-    });
 });
