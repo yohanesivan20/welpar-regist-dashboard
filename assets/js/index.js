@@ -16,6 +16,9 @@ $(document).ready(function () {
             headerRow.map(h => `<th>${h}</th>`).join("")
         );
 
+        // Update KTM summary
+        updateSummaryByKTM(originalRows);
+
         renderTable(originalRows);
     });
 
@@ -57,8 +60,6 @@ $(document).ready(function () {
     }
 
     function updateSummaryByKTM(rows) {
-        let totalSudah = 0;
-        let totalBelum = 0;
         let hadirSudah = 0;
         let hadirBelum = 0;
 
@@ -67,14 +68,12 @@ $(document).ready(function () {
             const status = (cols[9] || "").toLowerCase();
 
             if (keanggotaan === "sudah bergabung ktm") {
-                totalSudah++;
                 if (status === "hadir") hadirSudah++;
             } else if (keanggotaan === "belum bergabung ktm") {
-                totalBelum++;
                 if (status === "hadir") hadirBelum++;
             }
         });
-
+        
         $("#summaryKTM").text(`${hadirSudah} / ${hadirBelum}`);
     }
 
@@ -106,6 +105,16 @@ $(document).ready(function () {
                 method: "POST",
                 contentType: "application/json",
                 data: JSON.stringify({ rowIndex, status: selected }),
+                beforeSend: function() {
+                    Swal.fire({
+                        title: "Memproses...",
+                        text: "Sedang mengupdate status ke Google Sheets",
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
                 success: () => Swal.fire({ icon: "success", title: "Berhasil!", text: "Status diperbarui." }),
                 error: () => Swal.fire({ icon: "error", title: "Gagal!", text: "Gagal update status." })
             });
