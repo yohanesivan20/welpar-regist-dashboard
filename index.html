@@ -5,17 +5,55 @@
     <title>Dashboard Registrasi Way Finder</title>
     <link rel="icon" type="image/png" href="assets/images/ktm-logo.png">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/template.css">
 </head>
 <body>
     <div class="dashboard-container">
         <h2>Dashboard Absensi Peserta Way Finder</h2>
-        
-        <div id="totalHadirContainer" style="font-weight: bold; margin-bottom: 15px;">
-            Total Peserta Hadir: <span id="totalHadir">0</span>
+
+        <!-- Summary -->
+        <div class="row">
+            <div class="col-md-3 stretch-card grid-margin">
+                <div class="card bg-gradient-danger card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="assets/images/circle.svg" class="card-img-absolute" alt="circle-image"/>
+                        <h4 class="font-weight-normal mb-3">By Keanggotaan
+                            <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                        </h4>
+                        <h2 class="mb-5">0</h2>
+                        <h6 class="card-text">Increased by 60%</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 stretch-card grid-margin">
+                <div class="card bg-gradient-info card-img-holder text-white">
+                    <div class="card-body">
+                    <img src="assets/images/circle.svg" class="card-img-absolute" alt="circle-image"/>                  
+                    <h4 class="font-weight-normal mb-3">By Umur
+                        <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+                    </h4>
+                    <h2 class="mb-5">0</h2>
+                    <h6 class="card-text">Decreased by 10%</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 stretch-card grid-margin">
+                <div class="card bg-gradient-success card-img-holder text-white">
+                    <div class="card-body">
+                    <img src="assets/images/circle.svg" class="card-img-absolute" alt="circle-image"/>                                    
+                    <h4 class="font-weight-normal mb-3">Kehadiran Peserta
+                        <i class="mdi mdi-diamond mdi-24px float-right"></i>
+                    </h4>
+                    <h2 class="mb-3" id="totalHadir">0</h2>
+                    <h6 class="card-text">Diatas 60% silahkan acara dimulai</h6>
+                    </div>
+                </div>
+            </div>
         </div>
-        
+        <!-- End Summary -->
+
         <div id="searchContainer">
-            <input type="text" id="searchInput" placeholder="🔍 Cari peserta...">
+            <input type="text" id="searchInput" placeholder="🔍 Cari peserta disini biar cepet...">
         </div>
 
         <table id="dataTable">

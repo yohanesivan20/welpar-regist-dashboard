@@ -52,7 +52,8 @@ $(document).ready(function() {
         $("#tableBody").html(bodyHTML);
 
         // Tampilkan total hadir
-        $("#totalHadir").text(`${totalHadir} / ${totalPeserta}`);
+        let hadirText = formatSummary(totalHadir, totalPeserta);
+        $("#totalHadir").text(`${hadirText}`);
 
         // Event listener untuk dropdown
         $(".status-dropdown").on("change", function () {
@@ -76,7 +77,8 @@ $(document).ready(function() {
                 if ($(this).val() === "Hadir") hadir++;
             });
 
-            $("#totalHadir").text(`${hadir} / ${total}`);
+            let hadirText = formatSummary(hadir, total);
+            $("#totalHadir").text(`${hadirText}`);
 
             // Kirim ke backend (Vercel API)
             $.ajax({
@@ -114,5 +116,10 @@ $(document).ready(function() {
                 $(this).toggle(rowText.indexOf(keyword) > -1);
             });
         });
+
+        function formatSummary(hadir, total) {
+            const persen = total === 0 ? 0 : Math.round((hadir / total) * 100);
+            return `${hadir} / ${total} (${persen}%)`;
+        }
     });
 });

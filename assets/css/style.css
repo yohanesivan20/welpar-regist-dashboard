@@ -15,6 +15,44 @@ body {
     text-align: center;
 }
 
+/* Summary CSS */
+.card {
+  border: 0;
+  text-align: left;
+}
+
+.card .card-body {
+  padding: 0.5rem 2.5rem 1.5rem 2.5rem;
+}
+
+.card .card-body + .card-body {
+  padding-top: 1rem;
+}
+
+.card.card-img-holder .card-img-absolute {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+}
+
+.card-text:last-child {
+  margin-bottom: 0;
+}
+
+.card.card-img-holder {
+  position: relative;
+}
+
+.card.card-img-holder .card-img-absolute {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+}
+
+/* End Summary CSS */
+
 #searchInput {
     padding: 10px 14px;
     width: 280px;
