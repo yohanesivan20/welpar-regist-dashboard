@@ -146,11 +146,15 @@ $(document).ready(function () {
                     title: "Berhasil!",
                     text: "Status diperbarui."
                 }),
-                error: () => Swal.fire({
-                    icon: "error",
-                    title: "Gagal!",
-                    text: "Gagal update status."
-                })
+                error: () => {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Gagal!",
+                        text: "Gagal update status. Halaman akan direfresh."
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                }
             });
         });
     }
