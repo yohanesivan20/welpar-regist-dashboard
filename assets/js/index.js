@@ -142,6 +142,8 @@ $(document).ready(function () {
                 cell.css("background-color", "#f2ff7f");
             }
 
+            let table = $('#attendanceTable').DataTable();
+
             // Hitung ulang total hadir
             let hadir = 0;
             let hadirKtm = 0;
@@ -150,26 +152,25 @@ $(document).ready(function () {
             let hadirMiddleAge = 0;
             let hadirTopAge = 0;
 
-            $("#tableBody tr").each(function (i) {
-                const dropdown = $(this).find(".status-dropdown").val();
-                const keanggotaan = $(this).find("td").eq(7).text().toLowerCase(); // col[6] berarti <td>.eq(7)
-                const umur = $(this).find("td").eq(5).text().toLowerCase(); // col[4] berarti <td>.eq(5)
+            table.rows().every(function () {
+                const $row = $(this.node());
+                const dropdownVal = $row.find(".status-dropdown").val();
+                const keanggotaan = $row.find("td").eq(7).text().toLowerCase();
+                const umur = $row.find("td").eq(5).text().toLowerCase();
 
-                if (dropdown === "Hadir") {
+                if (dropdownVal === "Hadir") {
                     hadir++;
 
-                    //For Summary KTM
                     if (keanggotaan === "sudah bergabung ktm") hadirKtm++;
                     else if (keanggotaan === "belum bergabung ktm") hadirNon++;
 
-                    //For Summary Age
                     if (umur === "8-17 tahun") hadirBottomAge++;
                     else if (umur === "17-25 tahun" || umur === "26-30 tahun") hadirMiddleAge++;
                     else if (umur === "31-40 tahun" || umur === ">40 tahun") hadirTopAge++;
                 }
             });
 
-            $("#totalHadir").text(formatSummary(hadir, $(".status-dropdown").length));
+            $("#totalHadir").text(formatSummary(hadir, table.rows().count()));
             $("#summaryKTM").text(`${hadirKtm} / ${hadirNon}`);
             $("#summaryAge").text(`${hadirBottomAge} / ${hadirMiddleAge} / ${hadirTopAge}`);
 
