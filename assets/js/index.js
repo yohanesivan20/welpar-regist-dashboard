@@ -98,7 +98,15 @@ $(document).ready(function () {
             columnDefs: [
             {
                 targets: 9,
-                width: '100px'
+                width: '100px',
+            },
+            {
+                targets: 10,
+                orderable: false
+            },
+            {
+                targets: 4,
+                orderable: false
             },
             {
                 targets: 3,
@@ -155,8 +163,8 @@ $(document).ready(function () {
             table.rows().every(function () {
                 const $row = $(this.node());
                 const dropdownVal = $row.find(".status-dropdown").val();
-                const keanggotaan = $row.find("td").eq(7).text().toLowerCase();
-                const umur = $row.find("td").eq(5).text().toLowerCase();
+                const keanggotaan = $row.find("td").eq(6).text().toLowerCase();
+                const umur = $row.find("td").eq(4).text().toLowerCase();
 
                 if (dropdownVal === "Hadir") {
                     hadir++;
