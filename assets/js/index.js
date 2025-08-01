@@ -207,7 +207,7 @@ $(document).ready(function () {
                     Swal.fire({
                         icon: "error",
                         title: "Gagal!",
-                        text: "Gagal update status. Halaman akan direfresh."
+                        text: "Gagal update status. Silahkan hubungi developer!."
                     }).then(() => {
                         window.location.reload();
                     });
