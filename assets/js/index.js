@@ -135,6 +135,41 @@ $(document).ready(function () {
                 table.order([1, 'asc']).draw(); // Timestamp/No di index ke-1 (misalnya)
             }
         });
+
+        $("#summaryCamping").on("click", function () {
+            let summary = {
+                "Belum Pernah": 0,
+                "Pernah di Tumpang": 0,
+                "Pernah di Cikanyere": 0,
+                "Pernah di Bandol": 0
+            };
+
+            table.rows().every(function () {
+                const $row = $(this.node());
+                const camping = $row.find("td").eq(8).text().trim();
+
+                if (summary.hasOwnProperty(camping)) {
+                    summary[camping]++;
+                }
+            });
+
+            const total = table.rows().count();
+            const format = (value) => `${value} (${Math.round((value / total) * 100)}%)`;
+
+            Swal.fire({
+                icon: "info",
+                title: "Data Peserta Camping",
+                html: `
+                    <ul style="text-align: left; line-height: 1.8;">
+                        <li><strong>Belum Pernah:</strong> ${format(summary["Belum Pernah"])}</li>
+                        <li><strong>Pernah di Tumpang:</strong> ${format(summary["Pernah di Tumpang"])}</li>
+                        <li><strong>Pernah di Cikanyere:</strong> ${format(summary["Pernah di Cikanyere"])}</li>
+                        <li><strong>Pernah di Bandol:</strong> ${format(summary["Pernah di Bandol"])}</li>
+                    </ul>
+                `,
+                confirmButtonText: "Tutup"
+            });
+        });
     }
 
     function bindDropdownEvents() {
