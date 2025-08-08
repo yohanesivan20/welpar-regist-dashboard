@@ -336,6 +336,42 @@
   box-shadow: 0 0 0 0.2rem rgba(254, 124, 150, 0.5);
 }
 
+.btn-success {
+  color: #ffffff;
+  background-color: #28c76f; /* hijau utama */
+  border-color: #28c76f;
+}
+
+.btn-success:hover {
+  color: #fff;
+  background-color: #22a65e; /* hijau lebih gelap */
+  border-color: #1e9554;
+}
+
+.btn-success:focus, .btn-success.focus {
+  box-shadow: 0 0 0 0.2rem rgba(40, 199, 111, 0.5);
+}
+
+.btn-success.disabled, .btn-success:disabled {
+  color: #212529;
+  background-color: #28c76f;
+  border-color: #28c76f;
+}
+
+.btn-success:not(:disabled):not(.disabled):active, 
+.btn-success:not(:disabled):not(.disabled).active,
+.show > .btn-success.dropdown-toggle {
+  color: #fff;
+  background-color: #1e9554;
+  border-color: #1a844a;
+}
+
+.btn-success:not(:disabled):not(.disabled):active:focus, 
+.btn-success:not(:disabled):not(.disabled).active:focus,
+.show > .btn-success.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(40, 199, 111, 0.5);
+}
+
 .stretch-card {
   display: -webkit-flex;
   display: flex;

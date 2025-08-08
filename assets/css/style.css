@@ -233,3 +233,56 @@ th {
     min-width: 100px;
     max-width: 150px;
 }
+
+/* Swal CSS */
+/* Pastikan semua input dan select di swal form seragam */
+.swal-form .swal2-input.custom-input,
+.swal-form select.custom-input {
+  display: block !important;
+  width: 100% !important;
+  margin: 5px 0 !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  border: 1px solid #ccc !important;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Hilangkan perbedaan outline focus */
+.swal-form .swal2-input.custom-input:focus,
+.swal-form select.custom-input:focus {
+  border-color: #28c76f !important;
+  box-shadow: 0 0 4px rgba(40, 199, 111, 0.4) !important;
+  outline: none !important;
+}
+
+/* Lebarkan modal Swal */
+.swal-wide {
+  max-width: 600px !important;
+}
+
+/* Rapiin form label */
+.swal-form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #444;
+  text-align: left;
+}
+
+/* Input lebih halus */
+.custom-input {
+  width: 100% !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  border: 1px solid #ccc !important;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Hover & focus effect */
+.custom-input:focus {
+  border-color: #28c76f !important;
+  box-shadow: 0 0 4px rgba(40, 199, 111, 0.4) !important;
+}

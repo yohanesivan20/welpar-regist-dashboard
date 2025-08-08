@@ -170,6 +170,131 @@ $(document).ready(function () {
                 confirmButtonText: "Tutup"
             });
         });
+
+        $('#addData').on("click", function () {
+            Swal.fire({
+                title: "Tambah Data Peserta",
+                html: `
+                    <div class="swal-form">
+                        <label>Nama Peserta</label>
+                        <input id="swal-nama" class="swal2-input custom-input" placeholder="Masukkan nama">
+
+                        <label>Umur</label>
+                        <select id="swal-umur" class="swal2-input custom-input">
+                            <option value="" disabled selected>-- Masukan Range Usia --</option>
+                            <option value="8-17 Tahun">8-17 Tahun</option>
+                            <option value="18-25 Tahun">18-25 Tahun</option>
+                            <option value="26-30 Tahun">26-30 Tahun</option>
+                            <option value="31-40 Tahun">31-40 Tahun</option>
+                            <option value=">41 Tahun">> 41 Tahun</option>
+                        </select>
+
+                        <label>Domisili</label>
+                        <select id="swal-domisili" class="swal2-input custom-input">
+                            <option value="" disabled selected>-- Pilih Domisili Anda --</option>
+                            <option value="Jakarta Pusat">Jakarta Pusat</option>
+                            <option value="Jakarta Barat">Jakarta Barat</option>
+                            <option value="Jakarta Timur">Jakarta Timur</option>
+                            <option value="Jakarta Utara">Jakarta Utara</option>
+                            <option value="Jakarta Selatan">Jakarta Selatan</option>
+                            <option value="Tangerang">Tangerang</option>
+                            <option value="Bekasi">Bekasi</option>
+                            <option value="other">Cibubur/Cianjur/Depok</option>
+                        </select>
+
+                        <label>Keanggotaan</label>
+                        <select id="swal-keanggotaan" class="swal2-input custom-input">
+                            <option value="" disabled selected>-- Sudah Join KTM ? --</option>
+                            <option value="Belum Bergabung KTM">Belum Bergabung KTM</option>
+                            <option value="Sudah Bergabung KTM">Sudah Bergabung KTM</option>
+                        </select>
+
+                        <label>Camping</label>
+                        <select id="swal-camping" class="swal2-input custom-input">
+                            <option value="" disabled selected>-- Pernah Ikut Camping Rohani ? --</option>
+                            <option value="Pernah di Cikanyere">Pernah di Cikanyere</option>
+                            <option value="Pernah di Tumpang">Pernah di Tumpang</option>
+                            <option value="Pernah di Bandol">Pernah di Bandol</option>
+                            <option value="Belum Pernah">Belum Pernah</option>
+                        </select>
+
+                        <label>Status Kehadiran</label>
+                        <select id="swal-status" class="swal2-input custom-input">
+                            <option>Hadir</option>
+                        </select>
+                    </div>
+                `,
+                focusConfirm: false,
+                confirmButtonText: "Simpan",
+                showCancelButton: true,
+                cancelButtonText: "Batal",
+                customClass: {
+                    popup: 'swal-wide'
+                },
+                preConfirm: () => {
+                    const nama = $("#swal-nama").val().trim();
+                    const umur = $("#swal-umur").length ? $("#swal-umur").val() : '';
+                    const domisili = $("#swal-domisili").length ? $('#swal-domisili').val() : '';
+                    const keanggotaan = $("#swal-keanggotaan").length ? $("#swal-keanggotaan").val() : '';
+                    const camping = $("#swal-camping").length ? $("#swal-camping").val() : '';
+                    const status = $("#swal-status").val();
+
+                    if (!nama || !umur || !domisili || !keanggotaan || !camping) {
+                        Swal.showValidationMessage("⚠ Semua field wajib diisi!");
+                        return false;
+                    }
+
+                    return { nama, umur, domisili, keanggotaan, camping, status };
+                }
+            }).then((result) => {
+                if(result.isConfirmed) {
+                    const { nama, umur, domisili, keanggotaan, camping, status } = result.value;
+
+                    Swal.fire({
+                        title: 'Menyimpan data...',
+                        text: 'Harap tunggu sebentar.',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    const normalizedPhone = "-";
+                    const formData = {
+                        name: nama,
+                        email: "-",
+                        phone: normalizedPhone,
+                        age: umur,
+                        domicile: domisili,
+                        member: keanggotaan,
+                        media: "Social Media",
+                        camping: camping,
+                        message: status
+                    };
+
+                    const scriptURL = "https://script.google.com/macros/s/AKfycbwxfuW3mxaw5ctAVSJrKpJsPJDZimh69I1kuHP9Ddo8nK_34CvKY-kLUVJTM-SgKBykxw/exec";
+
+                    $.post(scriptURL, formData)
+                    .done(function() {
+                        Swal.fire({
+                            title: "Berhasil!",
+                            text: "Data berhasil disimpan.",
+                            icon: "success"
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    })
+                    .fail(function() {
+                        Swal.fire({
+                            title: "Gagal!",
+                            text: "Terjadi kesalahan saat mengirim data.",
+                            icon: "error"
+                        });
+                    })
+                }
+            });
+        });
     }
 
     function bindDropdownEvents() {
