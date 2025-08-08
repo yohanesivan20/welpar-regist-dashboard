@@ -14,7 +14,7 @@ Silakan clone atau fork jika ingin mengembangkan lebih lanjut.
 ---
 
 ## ✨ Fitur Utama
-- **Integrasi Google Spreadsheet**  
+- **Integrasi Google Spreadsheet AI**  
   Data diambil langsung dari spreadsheet yang dipublish di Google Drive.
 - **Dashboard Real-time**  
   Data otomatis ter-update setiap kali ada perubahan di spreadsheet.
