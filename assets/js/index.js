@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    $("#dashboard").hide();
     const sheetId = "1FrCJK0o2_Dbj_xqAB30CNGOpLeIYPzKtnsXezkwA7NE";
     const sheetName = "Sheet1";
     const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
@@ -119,9 +118,6 @@ $(document).ready(function () {
             }
         ]
         });
-
-        // Paksa DataTables hitung ulang lebar kolom setelah render
-        table.columns.adjust().draw();
 
         $("#searchInput").on("keyup change", function () {
             table.search(this.value).draw();
@@ -286,25 +282,7 @@ $(document).ready(function () {
                             text: "Data berhasil disimpan.",
                             icon: "success"
                         }).then(() => {
-                            // Susun data baru sesuai urutan kolom CSV
-                            const newRow = [
-                                "-",                   // Timestamp (atau biarkan kosong kalau ga ada)
-                                "-",                   // Email
-                                "-",                   // Phone
-                                "-",                   // Media
-                                umur,                  // Umur
-                                domisili,              // Domisili
-                                keanggotaan,           // Keanggotaan
-                                "-",                   // Message (opsional, kalau ada kolom ini)
-                                camping,               // Camping
-                                status                 // Status Kehadiran
-                            ];
-
-                            // Tambahkan ke originalRows
-                            originalRows.push(newRow);
-
-                            // Render ulang tabel dengan data baru
-                            renderTable(originalRows);
+                            window.location.reload();
                         });
                     })
                     .fail(function() {
