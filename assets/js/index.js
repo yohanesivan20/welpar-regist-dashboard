@@ -209,15 +209,6 @@ $(document).ready(function () {
                             <option value="Sudah Bergabung KTM">Sudah Bergabung KTM</option>
                         </select>
 
-                        <label>Camping</label>
-                        <select id="swal-camping" class="swal2-input custom-input">
-                            <option value="" disabled selected>-- Pernah Ikut Camping Rohani ? --</option>
-                            <option value="Pernah di Cikanyere">Pernah di Cikanyere</option>
-                            <option value="Pernah di Tumpang">Pernah di Tumpang</option>
-                            <option value="Pernah di Bandol">Pernah di Bandol</option>
-                            <option value="Belum Pernah">Belum Pernah</option>
-                        </select>
-
                         <label>Status Kehadiran</label>
                         <select id="swal-status" class="swal2-input custom-input">
                             <option>Hadir</option>
@@ -236,7 +227,7 @@ $(document).ready(function () {
                     const umur = $("#swal-umur").length ? $("#swal-umur").val() : '';
                     const domisili = $("#swal-domisili").length ? $('#swal-domisili').val() : '';
                     const keanggotaan = $("#swal-keanggotaan").length ? $("#swal-keanggotaan").val() : '';
-                    const camping = $("#swal-camping").length ? $("#swal-camping").val() : '';
+                    const camping = 'OTS';
                     const status = $("#swal-status").val();
 
                     if (!nama || !umur || !domisili || !keanggotaan || !camping) {
@@ -358,11 +349,20 @@ $(document).ready(function () {
                         }
                     });
                 },
-                success: () => Swal.fire({
-                    icon: "success",
-                    title: "Berhasil!",
-                    text: "Status diperbarui."
-                }),
+                // success: () => Swal.fire({
+                //     icon: "success",
+                //     title: "Berhasil!",
+                //     text: "Status diperbarui."
+                // }),
+                success: () => {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Berhasil!",
+                        text: "Status berhasil diperbarui."
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                },
                 error: () => {
                     Swal.fire({
                         icon: "error",
@@ -380,4 +380,36 @@ $(document).ready(function () {
         const persen = total === 0 ? 0 : Math.round((hadir / total) * 100);
         return `${hadir} / ${total} (${persen}%)`;
     }
+
+    setInterval(() => {
+        $.get(url, function (data) {
+            const parsed = Papa.parse(data.trim(), { skipEmptyLines: true });
+            const rows = parsed.data.map(cols => cols.map(col => col.trim()));
+            const newRows = rows.slice(1); // Buang header
+
+            // Bandingkan jumlah baris atau isi tiap baris
+            let dataBerubah = false;
+
+            if (newRows.length !== originalRows.length) {
+                dataBerubah = true;
+            } else {
+                for (let i = 0; i < newRows.length; i++) {
+                    const oldRow = originalRows[i];
+                    const newRow = newRows[i];
+
+                    // Cek jika ada kolom yang berubah (khusus kolom kehadiran = index 9)
+                    if (oldRow[9] !== newRow[9]) {
+                        dataBerubah = true;
+                        break;
+                    }
+                }
+            }
+
+            if (dataBerubah) {
+                originalRows = newRows; // Simpan data terbaru
+                renderTable(originalRows); // Render ulang
+            }
+        });
+    }, 20000); // setiap 20 detik
 });
+
